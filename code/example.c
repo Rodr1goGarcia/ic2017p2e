@@ -23,7 +23,7 @@
  * concrete simple implementation of the API (provided by the
  * showworld_simple.c file).
  *
- * @author Nuno Fachada
+ * @author Rodrigo Garcia
  * @date 2018
  * @copyright [GNU General Public License version 3 (GPLv3)](http://www.gnu.org/licenses/gpl.html)
  * */
@@ -31,25 +31,10 @@
 #include "showworld.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-/** Horizontal world size. */
-#define WORLD_X 20
 
-/** Vertical world size. */
-#define WORLD_Y 20
-
-/** Number of human agents. */
-#define NHUMANS 20
-
-/** Number of zombie agents. */
-#define NZOMBIES 20
-
-/** Number of playable human agents. */
-#define NHUMANS_PLAY 1
-
-/** Number of playable zombie agents. */
-#define NZOMBIES_PLAY 0
 
 /**
  * Structure defining agent properties.
@@ -77,8 +62,76 @@ unsigned int example_get_ag_info(void *world, unsigned int x, unsigned int y);
  *
  * @return Always zero.
  * */
-int main() {
+ 
+ /** Horizontal world size. */
+#define WORLD_X 20
 
+/** Vertical world size. */
+#define WORLD_Y 20
+
+/** Number of human agents. */
+#define NHUMANS 20
+
+/** Number of zombie agents. */
+#define NZOMBIES 20
+
+/** Number of playable human agents. */
+#define NHUMANS_PLAY 1
+
+/** Number of playable zombie agents. */
+#define NZOMBIES_PLAY 0
+
+int main(int argc, char *argv[]) {
+
+	/*int WORLD_X=0;
+	int WORLD_Y=0;
+	int NZOMBIES=0;
+	int NHUMANS=0;
+	int NZOMBIES_PLAY=0;
+	int NHUMANS_PLAY=0;*/
+	int TURNS=19;
+	int contar = 0; 
+	
+	/* Verificar se numero de argumentos foi o correto */
+    /* Parametros e variaveis*/
+	/*if(argc != 15){
+		fprintf(stderr,
+				"Exemplo de uso:\n\t%s "
+				"-x 20 "
+				"-y 20 "
+				"-z 10 "
+				"-h 30 "
+				"-Z 1 "
+				"-H 2 "
+				"-t 1000\n",
+				argv[0]);
+			exit(-1);
+	}
+	printf("Olá");
+	for(int i=1;i<argc;i=i+2){
+		if(strcmp(argv[i], "-x") == 0){
+			WORLD_X=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-y") == 0){
+			WORLD_Y=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-z") == 0){
+			NZOMBIES=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-h") == 0){
+			NHUMANS=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-Z") == 0){
+			NZOMBIES_PLAY=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-H") == 0){
+			NHUMANS_PLAY=atoi(argv[i+1]);
+		}
+		if(strcmp(argv[i], "-t") == 0){
+			TURNS=atoi(argv[i+1]);
+		}
+	}*/
+	
     /* An instance of a SHOWWORLD world display. */
     SHOWWORLD *sw = NULL;
 
@@ -95,95 +148,173 @@ int main() {
 
     /* Initialize random number generator. */
     srand(time(NULL));
-
+    
     /* ************************************* */
     /* Create and place human agents in grid */
     /* ************************************* */
-    for (int i = 0; i < NHUMANS; ++i) {
+    contar = NHUMANS;
+    while (contar != 0 ){
+		for (int i = 0; i < NHUMANS; i++) {
 
-        /* Determine random x and y coordinates. */
-        unsigned int x = rand() % WORLD_X;
-        unsigned int y = rand() % WORLD_Y;
+			/* Determine random x and y coordinates. */
+			unsigned int x = rand() % WORLD_X;
+			unsigned int y = rand() % WORLD_Y;
 
-        /* Check if there those coordinates are vacant, so we can put a new
-           agent in them. */
-        if (grid[x][y] == NULL) {
+			/* Check if there those coordinates are vacant, so we can put a new
+			agent in them. */
+			if (grid[x][y] == NULL) {
 
-            /* Is current agent supposed to be playable? */
-            unsigned char playable = (i < NHUMANS_PLAY);
+				/* Is current agent supposed to be playable? */
+				unsigned char playable = (i < NHUMANS_PLAY);
 
-            /* Create new agent and initialize its values. In a real project
-               you should have agent_new() and agent_destroy() functions and
-               not use malloc directly here. */
-            AGENT *ag = malloc(sizeof(AGENT));
-            ag->type = Human;
-            ag->playable = playable;
-            ag->id = (unsigned short) i;
-
+				/* Create new agent and initialize its values. In a real project
+				you should have agent_new() and agent_destroy() functions and
+				not use malloc directly here. */
+				AGENT *ag = malloc(sizeof(AGENT));
+				ag->type = Human;
+				ag->playable = playable;
+				ag->id = (unsigned short) i;
+            
             /* Put agent in grid. In a real project you should probably have
                a world_put() function or similar (like in Aula 12). */
-            grid[x][y] = ag;
-
-        } else {
+				grid[x][y] = ag;
+				contar--;
+			} else {
 
             /* If we get here it's because the grid position already has an
                agent in it. In this case we need to obtain new random (x,y)
                coordinates, but we also need to decrement the counter so in
                the end we have the correct number of agents. */
-            i--;
-        }
+				i--;
+			}
 
-    }
+		}
+	}
 
     /* ********************************************************************* */
     /* Create and place zombie agents in grid. This for loop is very similar */
     /* to the previous one for humans, so consider putting this common code  */
     /* in a function.                                                        */
     /* ********************************************************************* */
-    for (int i = 0; i < NZOMBIES; ++i) {
+    contar = NZOMBIES;
+    while (contar != 0){
+		for (int i = 0; i < NZOMBIES; i++) {
 
-        /* Determine random x and y coordinates. */
-        unsigned int x = rand() % WORLD_X;
-        unsigned int y = rand() % WORLD_Y;
+			/* Determine random x and y coordinates. */
+			unsigned int x = rand() % WORLD_X;
+			unsigned int y = rand() % WORLD_Y;
 
-        /* Check if there those coordinates are vacant, so we can put a new
-           agent in them. */
-        if (grid[x][y] == NULL) {
+			/* Check if there those coordinates are vacant, so we can put a new
+			agent in them. */
+			if (grid[x][y] == NULL) {
 
-            /* Is current agent supposed to be playable? */
-            unsigned char playable = (i < NZOMBIES_PLAY);
+				/* Is current agent supposed to be playable? */
+				unsigned char playable = (i < NZOMBIES_PLAY);
 
-            /* Create new agent and initialize its values. In a real project
-               you should have agent_new() and agent_destroy() functions and
-               not use malloc directly here. */
-            AGENT *ag = malloc(sizeof(AGENT));
-            ag->type = Zombie;
-            ag->playable = playable;
-            ag->id = (unsigned short) i + NHUMANS;
+				/* Create new agent and initialize its values. In a real project
+				you should have agent_new() and agent_destroy() functions and
+				not use malloc directly here. */
+				AGENT *ag = malloc(sizeof(AGENT));
+				ag->type = Zombie;
+				ag->playable = playable;
+				ag->id = (unsigned short) i + NHUMANS;
+           
+				/* Put agent in grid. In a real project you should probably have
+				a world_put() function or similar (like in Aula 12). */
+				grid[x][y] = ag;
+				contar--;
+			} else {
 
-            /* Put agent in grid. In a real project you should probably have
-               a world_put() function or similar (like in Aula 12). */
-            grid[x][y] = ag;
+				/* If we get here it's because the grid position already has an
+				agent in it. In this case we need to obtain new random (x,y)
+				coordinates, but we also need to decrement the counter so in
+				the end we have the correct number of agents. */
+				i--;
+			}
 
-        } else {
-
-            /* If we get here it's because the grid position already has an
-               agent in it. In this case we need to obtain new random (x,y)
-               coordinates, but we also need to decrement the counter so in
-               the end we have the correct number of agents. */
-            i--;
-        }
-
-    }
+		}
+	}
 
     /* ********************************************************************* */
     /* Update display using the showworld_update() function, as declared in  */
     /* the showworld.h file.                                                 */
     /* ********************************************************************* */
-    showworld_update(sw, grid);
+  
+showworld_update(sw, grid);
 
+for(int t=1; t<=TURNS; t++){
+	char tecla =' ';
+	printf("Turno %d \n", t);
+	printf("escolhe a tua jogada '2, 4, 6, 8' \n");
+	while (tecla != '2' && tecla != '4' && tecla != '6' && tecla != '8') {
+
+		scanf(" %c", &tecla);
+		getchar();
+		
+		switch (tecla) {
+		case '2': 
+			for (int i = 0; i <WORLD_X; i++) {
+				for (int j = 0; j < WORLD_Y; j++) {
+					if (grid[i][j] != NULL) {
+						if (j-1 >= 0){
+							grid[i][j-1] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			
+			break;
+		case '4':
+			for (int i = 0; i < WORLD_X; i++) {
+				for (int j = 0; j < WORLD_Y; j++) {
+					if (grid[i][j] != NULL){
+						if (i-1 >= 0){
+							grid[i-1][j] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			break;	
+		case '6':
+			for (int i = 19; i >= 0; i--) {
+				for (int j = 19; j >= 0; j--) {
+					if (grid[i][j] != NULL){
+						if (i+1 <= 19){
+							grid[i+1][j] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			
+			break;
+		case '8':
+			for (int i = 19; i >= 0; i--) {
+				for (int j = 19; j >= 0; j--) {
+					if (grid[i][j] != NULL){
+						if (j+1 <= 19){
+							grid[i][j+1] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			break;
+		
+		default:
+			printf("Essa tecla não é aceite, escolha 2,4,6,8\n");
+			break;
+		}
+	}
+	showworld_update(sw, grid);
+}
+   
+    
+    showworld_update(sw, grid);
     /* Before finishing, ask user to press ENTER. */
-    printf("Press ENTER to continue...");
+    printf("Press ENTER to continue...\n");
     getchar();
 
     /* Destroy all agents. */
@@ -203,6 +334,7 @@ int main() {
     /* Bye. */
     return 0;
 }
+
 
 /**
  * This function is an implementation of the ::get_agent_info_at() function
@@ -228,15 +360,18 @@ int main() {
  * ID). Bits 19-31 are available for student-defined agent extensions.
  * */
 unsigned int example_get_ag_info(void *w, unsigned int x, unsigned int y) {
-
+	
+	
     /* The agent information to return. */
     unsigned int ag_info = 0;
+  
 
     /* Convert generic pointer to world to a 2D grid of agent pointers (in
        practice we are reinterpreting the grid as 1D). */
     AGENT **grid = (AGENT **) w;
 
     /* Check if the given (x,y) coordinates are within bounds of the world. */
+    
     if ((x >= WORLD_X) || (y >= WORLD_Y)) {
 
         /* If we got here, then the coordinates are off bounds. As such we will
