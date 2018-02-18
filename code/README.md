@@ -9,20 +9,50 @@
 
 ### Architecture
 
-Para evitar ter um código principal muito cheio, dividi-mos o código em vários ficheiros .c sendo que cada um tem o seu
+Para evitar ter um código principal muito cheio, dividi-mos o código em alguns ficheiros .c sendo que cada um tem o seu
 .h que contêm vários parâmetros e funções. 
 
 O ficheiro principal é o "example.c". 
 Para fazer o shuffle da ordem de jogar de cada Humano e Zombie, de forma a evitar que exista vantagem de jogar em primeiro,
 criá-mos o ficheiro "baralha.c".
-Para efetuar o movimento de cada agente criá-mos o ficheiro "mover.c".
 
 ### Data structures
 
-Como bibliotecas para este trabalho usá-mos: ``G2.H, G2_X11.H, STDIO.H, STDLIB.H e TIME.H ``
+As bibliotecas de funções que utilizámos para este trabalho foram: ``G2.H, G2_X11.H, STDIO.H, STDLIB.H e TIME.H ``
 
-Em grande parte da estrutura de dados do trabalho utilizá-mos **arrays** e **structs**.
+Utilizá-mos **arrays** e **structs** em grande parte da estrutura do nosso trabalho, constituem portanto uma parte muito 
+importante neste projeto.
+
 Criá-mos ainda uma struct ``AGENT`` que contém a informação se o agente é jogável, a sua ID e o seu tipo.
+
+### Algorithms
+
+**Movimento** 
+``switch (tecla)`` Este algoritmo altera uma das coordenadas de um agente controlável. 
+Ao clicar **2** é somado 1 ao **y** do agente controlável. 
+Ao clicar **4** é subtraído 1 ao **x** do agente controlável. 
+Ao clicar **6** é somado 1 ao **x** do agente controlável. 
+Ao clicar **8** é subtraído 1 ao **y** do agente controlável. 
+O agente vai mover-se então, respectivamente, para **Baixo**, **Esquerda**, **Direita** e **Cima**.
+
+**NOTA: Este modelo de controlo de movimentos pode parecer pouco intuitivo, no entanto se reparar-mos no teclado numérico (Num Pad) 
+este modelo de movimentação torna-se bastante simples.**
+
+**Limite da grelha**
+O nosso jogo dando uso a uma grelha não toroidal utiliza um conjunto de algoritmos que impedem que os agentes ultrapassem os limites do mundo jogável,
+sendo estes:
+
+``if (j-1 >= 0)`` Este algoritmo serve para impedir que os agentes ultrapassem o **limite superior** do mundo jogável.
+Ou seja, a posição dos agentes nunca pode ser **negativa** em relação a j.                  
+
+``if (i-1 >= 0)`` Este algoritmo serve para impedir que os agentes ultrapassem o **limite esquerdo** do mundo jogável.
+Ou seja, a posição dos agentes nunca pode ser **negativa** em relação a i. 
+
+``if (i+1 <= WORLD_X-1)`` Este algoritmo serve para impedir que os agentes ultrapassem o **limite direito** do mundo jogável.
+Ou seja, a posição dos agentes nunca pode ser **superior** ao valor de WORLD_X.
+
+``if (j+1 <= WORLD_Y-1)`` Este algoritmo serve para impedir que os agentes ultrapassem o **limite inferior** do mundo jogável.
+Ou seja, a posição dos agentes nunca pode ser **superior** ao valor de WORLD_Y.
 
 ## User guide
 
@@ -39,11 +69,11 @@ Substituir:  "a" por um valor inteiro positivo para definir o tamanho horizontal
              "f" por um valor inteiro positivo, ou zero, para definir o número de Zombies controláveis;
 			 "g" por um valor inteiro positivo para definir o número de turnos que o jogo terá;
 
-**4º** Premir ENTER para começar e passar rondas;
+**4º** Premir ENTER para começar e avançar rondas;
 
 No caso de se estar a jogar com o modo interativo, cada número do teclado numérico corresponde a uma direção que se pode mover. 
 No caso: **8-Cima; 2-Baixo; 4-Esquerda; 6-Direita**; 
-Sendo estas as únicas direções que cada um dos agentes se consegue mover, pois o jogo funciona com uma **vizinhança de Von Neumann**;
+Estas são as únicas direções que cada um dos agentes se consegue mover, pois o jogo funciona com uma **vizinhança de Von Neumann**;
 
 O jogo conta com uma interface gráfica desenvolvida em G2 bastante simplista mas de facil percepção. Todos os agentes são "bolas"
 cada uma com a sua cor de forma a diferenciar cada um deles.
@@ -53,6 +83,8 @@ cada uma com a sua cor de forma a diferenciar cada um deles.
 **Bola Vermelha (Z)**- Zombies controlados pela I.A;
 **Bola Cinzenta ( )**- Espaço livre;
 **Bola Preta (U)**- Unknown;
+
+**5º** O jogo acaba quando forem jogados todos os turnos, sendo que pede ao jogador que prima a tecla ENTER para encerrar o mesmo.
 
 ## Conclusions
 

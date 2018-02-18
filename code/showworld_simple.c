@@ -59,9 +59,9 @@ struct showworld {
     get_agent_info_at aginfo_func;
 };
 
-/** Create a new display/visualization object for the simulation world.
+/** Cria uma nova interface grafica para a simulacao do mundo.
  **
- ** This function obeys the `showworld_new()` prototype defined in
+ * Esta funcao obedece ao prototipo `showworld_new()` que foi definido em
  ** `showworld.h`. **/
 SHOWWORLD *showworld_new(
     unsigned int xdim,
@@ -78,17 +78,17 @@ SHOWWORLD *showworld_new(
 
 }
 
-/** Destroy a display/visualization object for the simulation world.
+/**Destroi a interface grafica do mundo simulado.
  **
- ** This function obeys the `showworld_destroy()` prototype defined in
+  * Esta funcao obedece ao prototipo `showworld_new()` que foi definido em
  ** `showworld.h`. **/
 void showworld_destroy(SHOWWORLD *sw) {
     free(sw);
 }
 
-/** Update the simulation world display/visualization.
+/** Faz update a interface grafica.
  **
- ** This function obeys the `showworld_update()` prototype defined in
+ * * Esta funcao obedece ao prototipo `showworld_new()` que foi definido em
  ** `showworld.h`. **/
 void showworld_update(SHOWWORLD *sw, void *w) {
 	
@@ -106,96 +106,134 @@ void showworld_update(SHOWWORLD *sw, void *w) {
     
     printf("\n");
     
+    /**Usa caneta da cor cizenta**/
     g2_pen(*device, GRAY);
+    /**Desenha um circulo nas posicoes x (0.5) e y (0.5)**/
 	g2_plot_QP(*device, 0.5, 0.5);
+	/**Usa caneta da cor verde**/
     g2_pen(*device, GREEN);
+    /**Desenha um circulo nas posicoes x (2.5) e y (0.5)**/
 	g2_plot_QP(*device, 2.5, 0.5);
+	/**Usa caneta da cor preto**/
 	g2_pen(*device, BLACK);
-	g2_string(*device, sw->xdim * 2.75, sw->ydim*0.75, "HP");
+	/**Escreve HP (Humanos player) nas posicoes x (xdim*2.75) e y (ydim*0.75)**/
+	g2_string(*device, sw->xdim * 2.75, sw->ydim*0.75, "P");
+	/**Usa caneta da cor amarelo**/
 	g2_pen(*device, YELLOW);
+	/**Desenha um circulo nas posicoes x (4.5) e y (0.5)**/
 	g2_plot_QP(*device, 4.5, 0.5);
+	/**Usa caneta da cor preto**/
 	g2_pen(*device, BLACK);
+	/**Escreve H (Humanos) nas posicoes x (xdim*4.75) e y (ydim*0.75)**/
 	g2_string(*device, sw->xdim * 4.75, sw->ydim*0.75, "H");
+	/**Usa caneta da cor azul**/
 	g2_pen(*device, BLUE);
+	/**Desenha um circulo nas posicoes x (6.5) e y (0.5)**/
 	g2_plot_QP(*device, 6.5, 0.5);
+	/**Usa caneta da cor preto**/
 	g2_pen(*device, BLACK);
+	/**Escreve ZP (Zombies player) nas posicoes x (xdim*6.75) e y (ydim*0.75)**/
 	g2_string(*device, sw->xdim * 6.75, sw->ydim*0.75, "ZP");
+	/**Usa caneta da cor vermelha**/
 	g2_pen(*device, RED);
+	/**Desenha um circulo nas posicoes x (8.5) e y (0.5)**/
 	g2_plot_QP(*device, 8.5, 0.5);
+	/**Usa caneta da cor preto**/
 	g2_pen(*device, BLACK);
+	/**Escreve Z (Zombies) nas posicoes x (xdim*8.75) e y (ydim*0.75)**/
 	g2_string(*device, sw->xdim * 8.75, sw->ydim*0.75, "Z");
-	g2_pen(*device, BLACK);
+	/**Desenha um circulo nas posicoes x (10.5) e y (0.5)**/
 	g2_plot_QP(*device, 10.5, 0.5);
+	/**Usa caneta da cor branca**/
 	g2_pen(*device, WHITE);
+	/**Escreve U (Unknown) nas posicoes x (xdim*10.75) e y (ydim*0.75)**/
 	g2_string(*device, sw->xdim * 10.75, sw->ydim*0.75, "U");
     
-        /** Print a newline after world is shown/updated. **/
+    /** Mostra uma nova linha depois do mundo ser mostrado/atualizado. **/
     printf("\n");
 
-    /** Cycle through all the rows **/
+    /** Percorre todas as linhas **/
     for (unsigned int y = (sw->ydim); y > 0; --y) {
 
-        /** Cycle through all the columns for the current row **/
+        /** Percorre todas as colunas da linha atual **/
         for (unsigned int x = 0; x < sw->xdim; ++x) {
 
-            /** Get state of the world (in bit packed fashion) using the user
-               supplied function. **/
+            /** Recebe o estado da funcao (bit a bit) 
+             * usando a funcao fornecida pelo utilizador. **/
             unsigned int item = sw->aginfo_func(w, x, y-1);
 
-            /** Extract the agent type (2 bits). **/
+            /**Recolhe o tipo de agente(2 bits). **/
             AGENT_TYPE ag_type = item & 0x3;
-            /** Extract whether the agent is playable (1 bit). **/
+            /** Recolhe se o agente e jogavel ou nao (1 bit). **/
             unsigned char playable = (item >> 2) & 0x1;
-            /** Extract the agent ID (16 bits). **/
+            /** Recolhe o ID dos agentes (16 bits). **/
             unsigned short ag_id = (item >> 3) & 0xFFFF;
             
 
-            /** Determine the agent type. **/
+            /** Este switch determina o tipo de agente e desenha-o na
+             * grelha e na janela de g2. **/
             switch (ag_type) {
 
-                /** If no agent is present at (x,y) just print a dot. **/
+                /** Se nao ha nenhum agente numa certa coordenada (x,y)
+                 * mostra, no terminal um ponto e um circulo 
+                 * cinzento na janela de g2. **/
                 case None:
                     printf(" .  ");
                     g2_pen(*device, GRAY);
                     g2_plot_QP(*device, x+0.5, y+1.5);
                     break;
 
-                /** If human agent present at (x,y) print 'h' or 'H'. **/
+                /** Se ha um humano na coordenada (x,y) 
+                 * mostra um 'h' ou um 'H' no terminal e um circulo verde
+                 * ou amarelo na janela g2. **/
                 case Human:
                     if (playable) {
-                        /** Uppercase 'H' for player-controlled human agent. **/
+                        /** Se o 'H' for maiusculo, o humano e 
+                         * controlado pelo jogador (playable) e imprime
+                         * na janela g2 um circulo verde. **/
                         printf("H");
                         g2_pen(*device, GREEN);
                         g2_plot_QP(*device, x+0.5, y+1.5);
                     } else {
-                        /** Lowercase 'h' for AI-controlled human agent. **/
+                        /** Se o 'h' for minusculo o humano
+                         * e controlado por AI (not playble) e imprime
+                         * na janela g2 um circulo amarelo. **/
                         printf("h");
                         g2_pen(*device, YELLOW);
                         g2_plot_QP(*device, x+0.5, y+1.5);
                     }
-                    /** Print the agent ID in front of the 'h'/'H'. **/
+                    /** Mostra o ID do humano depois de 
+                     * 'H' ou 'h' (ex:H01,h02). **/
                     printf("%02X ", ag_id);
                     break;
 
-                /** If zombie agent present at (x,y) print 'z' or 'Z'. **/
+                /** Se esta um zombie presente na coordenada (x,y)
+                 * imprime no terminal um 'z' ou um 'Z' no terminal e um 
+                 * circulo azul ou vermelho na janela g2. **/
                 case Zombie:
                     if (playable) {
-                        /** Uppercase 'Z' for player-controlled zombie agent. **/
+                        /** Se o Z for maiusculo o zombie e controlado 
+                         * pelo jogador (playable) e imprime na janela g2
+                         * um circulo azul. **/
                         printf("Z");
                         g2_pen(*device, BLUE);
                         g2_plot_QP(*device, x+0.5, y+1.5);
                     } else {
-                        /** Lowercase 'z' for AI-controlled zombie agent. **/
+                        /** Se o 'h' for minusculo os zombie sao
+                         *  controlados por AI (not playable)
+                         * e imprime na janela g2 um circulo vermelho. **/
                         printf("z");
                         g2_pen(*device, RED);
                         g2_plot_QP(*device, x+0.5, y+1.5);
                     }
-                    /** Print the agent ID in front of the 'h'/'H'. **/
+                    /** Mostra o id do zombie depois de 'Z' ou'z'
+                     * (ex:Z01,z02) **/
                     printf("%02X ", ag_id);
                     break;
 
-                /** Print '?' if unknown type detected. This should *never*
-                   happen. **/
+                /** no caso de haver um agent unknown, 
+                 * imprime no terminal um '?' e na janela g2 imprime
+                 * um circulo preto. **/
                 default:
                     printf("?   ");
                     g2_pen(*device, BLACK);
@@ -204,11 +242,13 @@ void showworld_update(SHOWWORLD *sw, void *w) {
             }
         }
 
-        /** Print two newlines after each row. **/
+        /** Imprime no terminal duas linhas em branco depois de cada linha 
+         * do mapa . **/
         printf("\n\n");
 
     }
     
-    /** Print a newline after world is shown/updated. **/
+    /** Imprime uma linha em branco no terminal depois de 
+     * mostrar o mundo na totalidade **/
     printf("\n");
 }

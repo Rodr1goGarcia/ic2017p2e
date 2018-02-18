@@ -1,7 +1,5 @@
-#ifndef SHUFFLE_H
-#define SHUFFLE_H
-
-#include "baralhar.h"
+//#ifndef SHUFFLE_H
+//#define SHUFFLE_H
 
 /**
  * Funcao Baralhar agentes.
@@ -10,6 +8,6 @@ that holds pointers to `AGENT` objects of type
  Human and Zombie.
  * @param nagents numero total de agentes.
  **/
-void baralhar(AGENT **baralhar_agentes, unsigned int nagentes);
+//void baralhar(AGENT **baralhar_agentes, unsigned int nagentes);
 
-#endif
+//#endif
