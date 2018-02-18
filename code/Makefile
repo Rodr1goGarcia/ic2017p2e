@@ -30,11 +30,8 @@ PROGRAM=example
 # the "make" program will use the implicit rule for linking all object files
 # into an executable program.
 $(PROGRAM): $(PROGRAM).o showworld_simple.o 
-
-# Este seria codigo caso tivessemos conseguido implimentar o shuffle dos agentes:
-# $(PROGRAM): $(PROGRAM).o showworld_simple.o baralhar.o 
-
-
+# Este seria o codigo case tivessemos conseguido implementar o shuffle dos agentes:
+#$(PROGRAM): $(PROGRAM).o showworld_simple.o baralhar.o
 
 # Rule to generate program object. Again, because no explicit recipe is given,
 # "make" will use an implicit rule for properly compiling $(PROGRAM).o.
@@ -45,7 +42,7 @@ $(PROGRAM).o: $(PROGRAM).c showworld.h
 # showworld_simple.o.
 showworld_simple.o: showworld_simple.c showworld.h
 
-# Este seria codigo caso tivessemos conseguido implimentar o shuffle dos agentes:
+# Este seria o codigo case tivessemos conseguido implementar o shuffle dos agentes:
 # baralhar.o: baralhar.c baralhar.h
 
 # The following rule cleans all compiled (objects) and linked (executable

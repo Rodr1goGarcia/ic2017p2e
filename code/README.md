@@ -16,6 +16,8 @@ O ficheiro principal é o "example.c".
 Para fazer o shuffle da ordem de jogar de cada Humano e Zombie, de forma a evitar que exista vantagem de jogar em primeiro,
 criá-mos o ficheiro "baralha.c".
 
+![Fluxogram] (https://cdn.discordapp.com/attachments/414878391938842626/414895228688924672/IC_E2.svg)
+
 ### Data structures
 
 As bibliotecas de funções que utilizámos para este trabalho foram: ``G2.H, G2_X11.H, STDIO.H, STDLIB.H e TIME.H ``
