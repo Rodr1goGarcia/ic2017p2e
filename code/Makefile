@@ -13,7 +13,7 @@ CFLAGS=-Wall -Wextra -Wpedantic -std=c99 -g
 # Linker library location flags (e.g. -L)
 LDFLAGS=
 # Linker library flags (e.g. -l)
-LDLIBS=-lg2
+LDLIBS= -lg2
 
 ### Regular variables
 
@@ -29,7 +29,7 @@ PROGRAM=example
 # is generated when "make" is executed. Because no explicit recipe is given,
 # the "make" program will use the implicit rule for linking all object files
 # into an executable program.
-$(PROGRAM): $(PROGRAM).o showworld_simple.o
+$(PROGRAM): $(PROGRAM).o showworld_simple.o baralhar.o
 
 # Rule to generate program object. Again, because no explicit recipe is given,
 # "make" will use an implicit rule for properly compiling $(PROGRAM).o.
@@ -40,6 +40,7 @@ $(PROGRAM).o: $(PROGRAM).c showworld.h
 # showworld_simple.o.
 showworld_simple.o: showworld_simple.c showworld.h
 
+baralhar.o: baralhar.c baralhar.h
 # The following rule cleans all compiled (objects) and linked (executable
 # program) files. Because "clean" is not actually the name of a file, it is
 # good practice to specify it as a "phony" target (avoiding conflict with a

@@ -199,10 +199,11 @@ int main() {
 	for(int t=1; t<=TURNOS; t++){
 		/**Variavel que vai receber valor para andar**/
 		char tecla =' ';
-		/**Texto do turno e instruções**/
+		/**Informa quel e o turno e pede uma accao ao jogador**/
 		printf("Turno %d \n", t);
 		printf("escolhe a tua jogada '2, 4, 6, 8' \n");
-		/**Enquanto nao for tecla 2, 4,6,8**/
+		/**Enquanto nao for tecla 2,4,6,8 mostra o default e repete 
+		 * o pedido de tecla**/
 		while (tecla != '2' && tecla != '4' && tecla != '6' 
 		&& tecla != '8') {
 			/**Receber valor tecla**/
@@ -210,37 +211,66 @@ int main() {
 			getchar();
 			/**Cases**/
 			switch (tecla) {
-				case '2': /**Andar para baixo**/
+				/**Andar para baixo**/
+				case '2': 
+					/**Vai procurar, ponto a ponto, pelas casas onde 
+					 * na grid esta um agente diferente de NULL**/
 					for (int i = 0; i <WORLD_X; i++) {
 						for (int j = 0; j < WORLD_Y; j++) {
 							if (grid[i][j] != NULL) {
+								/**Vai verificar se o agente se vai 
+								 * movimentar para fora do mapa 
+								 * ultrapassando o limite inferior 
+								 * (y maximo)**/
 								if (j-1 >= 0){
+									/**Vai efetuar a movimentacao para 
+									 * a casa abaixo **/
 									grid[i][j-1] = grid[i][j];
+									/**Vai apagar a sua posicao anterior**/
 									grid[i][j] = None;
 								}
 							}
 						}
 					}
 					break;
-				
-				case '4': /**Andar para esquerda**/
+				/**Andar para esquerda**/
+				case '4': 
+					/**Vai procurar, ponto a ponto, pelas casas onde 
+					 * na grid esta um agente diferente de NULL**/
 					for (int i = 0; i < WORLD_X; i++) {
 						for (int j = 0; j < WORLD_Y; j++) {
 							if (grid[i][j] != NULL){
+								/**Vai verificar se o agente se vai 
+								 * movimentar para fora do mapa 
+								 * ultrapassando o limite da esquerda 
+								 * (x minimo)**/
 								if (i-1 >= 0){
+									/**Vai efetuar a movimentacao para 
+									 * a casa a esquerda **/
 									grid[i-1][j] = grid[i][j];
+									/**Vai apagar a sua posicao anterior**/
 									grid[i][j] = None;
 								}
 							}
 						}
 					}
 					break;	
-				case '6': /**Andar para direita**/
+				/**Andar para direita**/
+				case '6': 
+					/**Vai procurar, ponto a ponto, pelas casas onde 
+					 * na grid esta um agente diferente de NULL**/
 					for (int i = WORLD_X-1; i >= 0; i--) {
 						for (int j = WORLD_Y-1; j >= 0; j--) {
 							if (grid[i][j] != NULL){
+								/**Vai verificar se o agente se vai 
+								* movimentar para fora do mapa 
+								* ultrapassando o limite da direita 
+								* (x maximo)**/
 								if (i+1 <= WORLD_X-1){
+									/**Vai efetuar a movimentacao para 
+									 * a casa a direita **/
 									grid[i+1][j] = grid[i][j];
+									/**Vai apagar a sua posicao anterior**/
 									grid[i][j] = None;
 								}
 							}
@@ -248,12 +278,22 @@ int main() {
 					}
 					
 					break;
-				case '8': /**Andar para cima**/
+				/**Andar para cima**/
+				case '8': 
+					/**Vai procurar, ponto a ponto, pelas casas onde 
+					 * na grid esta um agente diferente de NULL**/
 					for (int i = WORLD_X-1; i >= 0; i--) {
 						for (int j = WORLD_Y-1; j >= 0; j--) {
 							if (grid[i][j] != NULL){
+								/**Vai verificar se o agente se vai 
+								* movimentar para fora do mapa 
+								* ultrapassando o limite superior 
+								* (y minimo)**/
 								if (j+1 <= WORLD_Y-1){
+									/**Vai efetuar a movimentacao para 
+									 * a casa acima**/
 									grid[i][j+1] = grid[i][j];
+									/**Vai apagar a sua posicao anterior**/
 									grid[i][j] = None;
 								}
 							}
@@ -261,6 +301,8 @@ int main() {
 					}
 					break;
 				
+				/**Caso nenhum dos casos anteriores se confirme, 
+				 * executa o seguinte codigo**/
 				default:
 					printf("Essa tecla não é aceite, escolha 2,4,6,8\n");
 					break;
@@ -275,7 +317,7 @@ int main() {
 	printf("Press ENTER to continue...\n");
 	getchar();
 
-	/** Destroy all agents. **/
+	/** Destroir todos os agentes. **/
 	for (int i = 0; i < WORLD_X; i++) {
 		for (int j = 0; j < WORLD_Y; j++) {
 			if (grid[i][j] != NULL) {
@@ -335,7 +377,8 @@ unsigned int example_get_ag_info(void *w, unsigned int x, unsigned int y) {
 
     } else {
 
-        /** Sendo que as coordenadas estao dentro do mundo, vamos comecar a recolher as informacoes dos agentes  **/
+        /** Sendo que as coordenadas estao dentro do mundo, 
+         * vamos comecar a recolher as informacoes dos agentes  **/
 
         /** Obter as coordenadas do agente. **/
         AGENT *ag = grid[x * WORLD_Y + y];
@@ -343,22 +386,21 @@ unsigned int example_get_ag_info(void *w, unsigned int x, unsigned int y) {
         /** ver se ha um agente em x, y **/
         if (ag == NULL) {
 
-            /** If there is no agent at the (x,y) coordinates, set agent type to
-               None. No need to specify agent ID or playable status, since
-               there is no agent here. **/
+            /**Se nao ha agente nas coordenadas (x, y),
+             *  o seu ID é defenido como none **/
             ag_info = None;
 
         } else {
 
-            /** If we get here it's because there is an agent at (x,y). Bit-pack
-               all the agent information as specified by the get_agent_info_at
-               function pointer definition. **/
+            /**Se chegamos aqui e porque ha um agente em (x,y).
+             * Vai ser junta toda a informacao, bit a bit dos agentes
+             * como e especificada pela funcao get_agent_info_at. **/
             ag_info = (ag->id << 3) | (ag->playable << 2) | ag->type;
 
         }
 
     }
 
-    /** Return the requested agent information. **/
+    /** Devolver a informacao pedida. **/
     return ag_info;
 }

@@ -4,11 +4,12 @@
 #include "baralhar.h"
 
 /**
- * Shuffle Function.
- * @param agents_array Array that holds pointers to `AGENT` objects of type
+ * Funcao Baralhar agentes.
+ * @param agents_array Array que guarda apontadores para agentes do tipo humano e zombie
+that holds pointers to `AGENT` objects of type
  Human and Zombie.
- * @param nagents Number of total agents.
- * */
+ * @param nagents numero total de agentes.
+ **/
 void baralhar(AGENT **baralhar_agentes, unsigned int nagentes);
 
 #endif
