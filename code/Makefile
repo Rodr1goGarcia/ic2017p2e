@@ -13,7 +13,7 @@ CFLAGS=-Wall -Wextra -Wpedantic -std=c99 -g
 # Linker library location flags (e.g. -L)
 LDFLAGS=
 # Linker library flags (e.g. -l)
-LDLIBS= -lg2
+LDLIBS=-lg2
 
 ### Regular variables
 
