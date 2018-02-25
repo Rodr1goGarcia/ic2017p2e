@@ -37,25 +37,25 @@
 #include <g2.h>
 #include <g2_X11.h>
 /** Define o tamanho horizontal do Mundo. **/
-#define WORLD_X 5
+#define WORLD_X 20
 
 /** Define o tamanho vertical do mundo. **/
-#define WORLD_Y 5
+#define WORLD_Y 20
 
 /** Define o numero de humanos. */
-#define NHUMANS 1
+#define NHUMANS 6
 
 /** Define o numero de Zombies. */
-#define NZOMBIES 5
+#define NZOMBIES 6
 
 /** Numero de humanos playable. */
-#define NHUMANS_PLAY 0
+#define NHUMANS_PLAY 2
 
 /** Numero de zombies playable. */
-#define NZOMBIES_PLAY 5
+#define NZOMBIES_PLAY 2
 
 /** Numero de turnos **/
-#define TURNOS 3
+#define TURNOS 1
 
 /** Variavel para contar**/
 int contar = 0;
@@ -225,7 +225,7 @@ int main() {
 								while (tecla != '2' && tecla != '4' && tecla != '6' 
 								&& tecla != '8') {
 									printf("escolhe a tua jogada '2, 4, 6, 8' \n");
-									printf("E a vez de %2d jogar!: ", grid[i][j]->id);
+									printf("E a vez de %02d jogar!: ", grid[i][j]->id);
 									/**Receber valor tecla**/
 									scanf(" %c", &tecla);
 									getchar();
@@ -356,8 +356,7 @@ int main() {
 							if(contar==0){
 								t=TURNOS;
 								/** Indica que os Zombies ganharam **/
-								printf("Os Zombies venceram a raça humana!\n");
-								getchar();
+								printf("Os Zombies venceram a raca humana!\n");
 							}
 							/**Variavel que vai receber valor para andar**/
 							tecla =' ';
@@ -367,6 +366,10 @@ int main() {
 				}
 			}
 		}
+	}
+	if(contar != 0){
+		/** Indica que os Humanos ganharam **/
+		printf("Os Humanos venceram os zombies!\n");
 	}
 	/** Fim do Jogo **/
 	printf("Acabou o Jogo!\n");
