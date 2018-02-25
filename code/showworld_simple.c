@@ -38,7 +38,7 @@
 enum g2_colors {
     WHITE = 0, /** Background **/
     BLACK = 1, /** Nothing **/
-    BLUE= 3, /** Playable ZOmbie**/
+    BLUE= 3, /** Playable Zombie**/
     GREEN = 7, /** Playable Agent **/
     GRAY = 14, /** Agent None **/
     RED = 19, /** Agent Zombies **/
@@ -96,7 +96,7 @@ void showworld_update(SHOWWORLD *sw, void *w) {
     device = malloc(sizeof(int));
 	
     /**Abrir janela **/
-    *device = g2_open_X11(sw->xdim * 21.5, sw->ydim * 23.5);
+    *device = g2_open_X11(sw->xdim * 25.0, sw->ydim * 30.0);
     
     /** Desenhar o fundo **/
     g2_set_background(*device, WHITE);

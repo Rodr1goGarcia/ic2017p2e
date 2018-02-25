@@ -37,33 +37,36 @@
 #include <g2.h>
 #include <g2_X11.h>
 /** Define o tamanho horizontal do Mundo. **/
-#define WORLD_X 20
+#define WORLD_X 5
 
 /** Define o tamanho vertical do mundo. **/
-#define WORLD_Y 20
+#define WORLD_Y 5
 
 /** Define o numero de humanos. */
-#define NHUMANS 6
+#define NHUMANS 1
 
 /** Define o numero de Zombies. */
-#define NZOMBIES 6
+#define NZOMBIES 5
 
 /** Numero de humanos playable. */
-#define NHUMANS_PLAY 2
+#define NHUMANS_PLAY 0
 
 /** Numero de zombies playable. */
-#define NZOMBIES_PLAY 2
+#define NZOMBIES_PLAY 5
 
 /** Numero de turnos **/
-#define TURNOS 10
+#define TURNOS 3
 
 /** Variavel para contar**/
-int contar = 0; 
+int contar = 0;
+
+/** Array **/
+int played[WORLD_X][WORLD_Y];
 
 typedef struct {
-    AGENT_TYPE type;        /**Tipo de agente         */
-    unsigned char playable; /**Jogabilidade do agente  */
-    unsigned short id;      /**< ID do agente.          */
+    AGENT_TYPE type;        /**Tipo de agente         	**/
+    unsigned char playable; /**Jogabilidade do agente	**/
+    unsigned short id;      /**< ID do agente.          **/
 } AGENT;
 
 /** This function is an implementation of the definition provided by the
@@ -195,133 +198,186 @@ int main() {
   
 	showworld_update(sw, grid);
 
+	contar = NHUMANS;
 	/** TURNOS **/
 	for(int t=1; t<=TURNOS; t++){
+		for (int i = 0; i <WORLD_X; i++) {
+			for (int j = 0; j < WORLD_Y; j++) {
+				if (grid[i][j] != NULL) {
+					played[i][j] = 0;
+				}
+			}
+		}
 		/**Variavel que vai receber valor para andar**/
 		char tecla =' ';
 		/**Informa quel e o turno e pede uma accao ao jogador**/
 		printf("Turno %d \n", t);
-		printf("escolhe a tua jogada '2, 4, 6, 8' \n");
 		/**Enquanto nao for tecla 2,4,6,8 mostra o default e repete 
 		 * o pedido de tecla**/
-		while (tecla != '2' && tecla != '4' && tecla != '6' 
-		&& tecla != '8') {
-			/**Receber valor tecla**/
-			scanf(" %c", &tecla);
-			getchar();
-			/**Cases**/
-			switch (tecla) {
-				/**Andar para baixo**/
-				case '2': 
-					/**Vai procurar, ponto a ponto, pelas casas onde 
-					 * na grid esta um agente diferente de NULL**/
-					for (int i = 0; i <WORLD_X; i++) {
-						for (int j = 0; j < WORLD_Y; j++) {
-							if (grid[i][j] != NULL) {
-								/**Vai verificar se o agente se vai 
-								 * movimentar para fora do mapa 
-								 * ultrapassando o limite inferior 
-								 * (y maximo)**/
-								if (j-1 >= 0){
-									/**Vai efetuar a movimentacao para 
-									 * a casa abaixo **/
-									grid[i][j-1] = grid[i][j];
-									/**Vai apagar a sua posicao anterior**/
-									grid[i][j] = None;
+		/**Vai procurar, ponto a ponto, pelas casas onde 
+		* na grid esta um agente diferente de NULL**/
+		for (int i = 0; i <WORLD_X; i++) {
+			for (int j = 0; j < WORLD_Y; j++) {
+				if(contar != 0){	
+					if (grid[i][j] != NULL) {
+						if(grid[i][j]->playable){
+							if(played[i][j] == 0){
+								while (tecla != '2' && tecla != '4' && tecla != '6' 
+								&& tecla != '8') {
+									printf("escolhe a tua jogada '2, 4, 6, 8' \n");
+									printf("E a vez de %2d jogar!: ", grid[i][j]->id);
+									/**Receber valor tecla**/
+									scanf(" %c", &tecla);
+									getchar();
+									/**Cases**/
+									switch (tecla) {
+										/**Andar para baixo**/
+										case '2': 
+											/**Vai verificar se o agente se vai 
+											 * movimentar para fora do mapa 
+											 * ultrapassando o limite inferior 
+											 * (y maximo)**/
+											if (j-1 >= 0){
+												if (grid[i][j-1] == NULL) {
+													/**Vai efetuar a movimentacao para 
+													 * a casa abaixo **/
+													grid[i][j-1] = grid[i][j];
+													/**Vai apagar a sua posicao anterior**/
+													grid[i][j] = None;
+													
+													/**Guarda o valor do agente para não jogar até a proxima ronda**/
+													played[i][j-1]=1;
+												}else if (grid[i][j-1]->type == Human) {
+													if (grid[i][j]->type == Zombie) {
+													/**Vai transformar o agente humano em zombie **/
+													grid[i][j-1]->type = Zombie;
+													/**Reduz o numero de Humanos**/
+													contar--;
+														
+													/**Guarda o valor do agente para não jogar até a proxima ronda**/
+													played[i][j]=1;
+													}
+												}
+											}
+											break;
+										/**Andar para esquerda**/
+										case '4': 
+											/**Vai verificar se o agente se vai 
+											 * movimentar para fora do mapa 
+											 * ultrapassando o limite da esquerda 
+											 * (x minimo)**/
+											if (i-1 >= 0){
+												if (grid[i-1][j] == NULL) {
+													/**Vai efetuar a movimentacao para 
+													 * a casa a esquerda **/
+													grid[i-1][j] = grid[i][j];
+													/**Vai apagar a sua posicao anterior**/
+													grid[i][j] = None;
+													/**Guarda o valor do agente para não jogar até a proxima ronda**/
+													played[i-1][j]=1;
+												}else if (grid[i-1][j]->type == Human) {
+													if (grid[i][j]->type == Zombie) {
+														/**Vai transformar o agente humano em zombie **/
+														grid[i-1][j]->type = Zombie;
+														/**Reduz o numero de Humanos**/
+														contar--;
+														
+														/**Guarda o valor do agente para não jogar até a proxima ronda**/
+														played[i][j]=1;
+													}
+												}
+											}
+											break;	
+										/**Andar para direita**/
+										case '6': 
+											/**Vai verificar se o agente se vai 
+											* movimentar para fora do mapa 
+											* ultrapassando o limite da direita 
+											* (x maximo)**/
+											if (i+1 <= WORLD_X-1){
+												if (grid[i+1][j] == NULL) {
+													/**Vai efetuar a movimentacao para 
+													 * a casa a direita **/
+													grid[i+1][j] = grid[i][j];
+													/**Vai apagar a sua posicao anterior**/
+													grid[i][j] = None;
+													/**Guarda o valor do agente para não jogar até a proxima ronda**/
+													played[i+1][j]=1;
+												}else if (grid[i+1][j]->type == Human) {
+													if (grid[i][j]->type == Zombie) {
+														/**Vai transformar o agente humano em zombie **/
+														grid[i+1][j]->type = Zombie;
+														/**Reduz o numero de Humanos**/
+														contar--;
+														
+														/**Guarda o valor do agente para não jogar até a proxima ronda**/
+														played[i][j]=1;
+													}
+												}
+											}	
+											break;
+										/**Andar para cima**/
+										case '8': 
+											/**Vai verificar se o agente se vai 
+											* movimentar para fora do mapa 
+											* ultrapassando o limite superior 
+											* (y minimo)**/
+											if (j+1 <= WORLD_Y-1){
+												if (grid[i][j+1] == NULL) {
+													/**Vai efetuar a movimentacao para 
+													 * a casa acima**/
+													grid[i][j+1] = grid[i][j];
+													/**Vai apagar a sua posicao anterior**/
+													grid[i][j] = None;
+													/**Guarda o valor do agente para não jogar até a proxima ronda**/
+													played[i][j+1]=1;
+												}else if (grid[i][j+1]->type == Human) {
+													if (grid[i][j]->type == Zombie) {
+														/**Vai transformar o agente humano em zombie **/
+														grid[i][j+1]->type = Zombie;
+														/**Reduz o numero de Humanos**/
+														contar--;
+														
+														/**Guarda o valor do agente para não jogar até a proxima ronda**/
+														played[i][j]=1;
+													}
+												}
+											}
+											break;
+										/**Caso nenhum dos casos anteriores se confirme, 
+										 * executa o seguinte codigo**/
+										default:
+											printf("Essa tecla não é aceite, escolha 2,4,6,8\n");
+											break;
+									}
 								}
+							/**Atualiza posicoes dos agentes**/
+							showworld_update(sw, grid);
+							if(contar==0){
+								t=TURNOS;
+								/** Indica que os Zombies ganharam **/
+								printf("Os Zombies venceram a raça humana!\n");
+								getchar();
+							}
+							/**Variavel que vai receber valor para andar**/
+							tecla =' ';
 							}
 						}
 					}
-					break;
-				/**Andar para esquerda**/
-				case '4': 
-					/**Vai procurar, ponto a ponto, pelas casas onde 
-					 * na grid esta um agente diferente de NULL**/
-					for (int i = 0; i < WORLD_X; i++) {
-						for (int j = 0; j < WORLD_Y; j++) {
-							if (grid[i][j] != NULL){
-								/**Vai verificar se o agente se vai 
-								 * movimentar para fora do mapa 
-								 * ultrapassando o limite da esquerda 
-								 * (x minimo)**/
-								if (i-1 >= 0){
-									/**Vai efetuar a movimentacao para 
-									 * a casa a esquerda **/
-									grid[i-1][j] = grid[i][j];
-									/**Vai apagar a sua posicao anterior**/
-									grid[i][j] = None;
-								}
-							}
-						}
-					}
-					break;	
-				/**Andar para direita**/
-				case '6': 
-					/**Vai procurar, ponto a ponto, pelas casas onde 
-					 * na grid esta um agente diferente de NULL**/
-					for (int i = WORLD_X-1; i >= 0; i--) {
-						for (int j = WORLD_Y-1; j >= 0; j--) {
-							if (grid[i][j] != NULL){
-								/**Vai verificar se o agente se vai 
-								* movimentar para fora do mapa 
-								* ultrapassando o limite da direita 
-								* (x maximo)**/
-								if (i+1 <= WORLD_X-1){
-									/**Vai efetuar a movimentacao para 
-									 * a casa a direita **/
-									grid[i+1][j] = grid[i][j];
-									/**Vai apagar a sua posicao anterior**/
-									grid[i][j] = None;
-								}
-							}
-						}
-					}
-					
-					break;
-				/**Andar para cima**/
-				case '8': 
-					/**Vai procurar, ponto a ponto, pelas casas onde 
-					 * na grid esta um agente diferente de NULL**/
-					for (int i = WORLD_X-1; i >= 0; i--) {
-						for (int j = WORLD_Y-1; j >= 0; j--) {
-							if (grid[i][j] != NULL){
-								/**Vai verificar se o agente se vai 
-								* movimentar para fora do mapa 
-								* ultrapassando o limite superior 
-								* (y minimo)**/
-								if (j+1 <= WORLD_Y-1){
-									/**Vai efetuar a movimentacao para 
-									 * a casa acima**/
-									grid[i][j+1] = grid[i][j];
-									/**Vai apagar a sua posicao anterior**/
-									grid[i][j] = None;
-								}
-							}
-						}
-					}
-					break;
-				
-				/**Caso nenhum dos casos anteriores se confirme, 
-				 * executa o seguinte codigo**/
-				default:
-					printf("Essa tecla não é aceite, escolha 2,4,6,8\n");
-					break;
+				}
 			}
 		}
-		/**Atualiza posicoes dos agentes**/
-		showworld_update(sw, grid);
 	}
-
-	showworld_update(sw, grid);
+	/** Fim do Jogo **/
+	printf("Acabou o Jogo!\n");
 	/** PEDE UM ENTER. **/
 	printf("Press ENTER to continue...\n");
 	getchar();
 
-	/** Destroir todos os agentes. **/
+	/** Destruir todos os agentes. **/
 	for (int i = 0; i < WORLD_X; i++) {
 		for (int j = 0; j < WORLD_Y; j++) {
 			if (grid[i][j] != NULL) {
-				
 				free(grid[i][j]);
 			}
 		}
