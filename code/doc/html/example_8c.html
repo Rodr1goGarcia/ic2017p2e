@@ -165,6 +165,10 @@ Variables</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="example_8c.html#ac75e11be6d8cebf929e38a4755e3b9a9">contar</a> = 0</td></tr>
 <tr class="memdesc:ac75e11be6d8cebf929e38a4755e3b9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variavel para contar. <br /></td></tr>
 <tr class="separator:ac75e11be6d8cebf929e38a4755e3b9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad04f73cc7651ef09781187aa4602118"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad04f73cc7651ef09781187aa4602118"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="example_8c.html#aad04f73cc7651ef09781187aa4602118">played</a> [<a class="el" href="example__ai_8c.html#a2c2bde7b7ee036456c079b97d1a904b8">WORLD_X</a>][<a class="el" href="example__ai_8c.html#a64e8c993f3050d1eb6f4371ce2506996">WORLD_Y</a>]</td></tr>
+<tr class="memdesc:aad04f73cc7651ef09781187aa4602118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array. <br /></td></tr>
+<tr class="separator:aad04f73cc7651ef09781187aa4602118"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file is part of "Projeto de Introdução à Computação 2ª época 2017/2018" (PIC2e1718). </p>
@@ -336,7 +340,7 @@ Nuno Fachada </dd></dl>
 <p>Se chegamos aqui e porque ha um agente em (x,y). Vai ser junta toda a informacao, bit a bit dos agentes como e especificada pela funcao get_agent_info_at.</p>
 <p>Devolver a informacao pedida. </p>
 
-<p>Definition at line <a class="el" href="example_8c_source.html#l00361">361</a> of file <a class="el" href="example_8c_source.html">example.c</a>.</p>
+<p>Definition at line <a class="el" href="example_8c_source.html#l00420">420</a> of file <a class="el" href="example_8c_source.html">example.c</a>.</p>
 
 </div>
 </div>
@@ -389,36 +393,53 @@ Nuno Fachada </dd></dl>
 <p>Variavel que vai receber valor para andar</p>
 <p>Informa quel e o turno e pede uma accao ao jogador</p>
 <p>Enquanto nao for tecla 2,4,6,8 mostra o default e repete o pedido de tecla</p>
+<p>Vai procurar, ponto a ponto, pelas casas onde na grid esta um agente diferente de NULL</p>
 <p>Receber valor tecla</p>
 <p>Cases</p>
 <p>Andar para baixo</p>
-<p>Vai procurar, ponto a ponto, pelas casas onde na grid esta um agente diferente de NULL</p>
 <p>Vai verificar se o agente se vai movimentar para fora do mapa ultrapassando o limite inferior (y maximo)</p>
 <p>Vai efetuar a movimentacao para a casa abaixo</p>
 <p>Vai apagar a sua posicao anterior</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
+<p>Vai transformar o agente humano em zombie</p>
+<p>Reduz o numero de Humanos</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
 <p>Andar para esquerda</p>
-<p>Vai procurar, ponto a ponto, pelas casas onde na grid esta um agente diferente de NULL</p>
 <p>Vai verificar se o agente se vai movimentar para fora do mapa ultrapassando o limite da esquerda (x minimo)</p>
 <p>Vai efetuar a movimentacao para a casa a esquerda</p>
 <p>Vai apagar a sua posicao anterior</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
+<p>Vai transformar o agente humano em zombie</p>
+<p>Reduz o numero de Humanos</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
 <p>Andar para direita</p>
-<p>Vai procurar, ponto a ponto, pelas casas onde na grid esta um agente diferente de NULL</p>
 <p>Vai verificar se o agente se vai movimentar para fora do mapa ultrapassando o limite da direita (x maximo)</p>
 <p>Vai efetuar a movimentacao para a casa a direita</p>
 <p>Vai apagar a sua posicao anterior</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
+<p>Vai transformar o agente humano em zombie</p>
+<p>Reduz o numero de Humanos</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
 <p>Andar para cima</p>
-<p>Vai procurar, ponto a ponto, pelas casas onde na grid esta um agente diferente de NULL</p>
 <p>Vai verificar se o agente se vai movimentar para fora do mapa ultrapassando o limite superior (y minimo)</p>
 <p>Vai efetuar a movimentacao para a casa acima</p>
 <p>Vai apagar a sua posicao anterior</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
+<p>Vai transformar o agente humano em zombie</p>
+<p>Reduz o numero de Humanos</p>
+<p>Guarda o valor do agente para não jogar até a proxima ronda</p>
 <p>Caso nenhum dos casos anteriores se confirme, executa o seguinte codigo</p>
 <p>Atualiza posicoes dos agentes</p>
+<p>Indica que os Zombies ganharam</p>
+<p>Variavel que vai receber valor para andar</p>
+<p>Indica que os Humanos ganharam</p>
+<p>Fim do Jogo</p>
 <p>PEDE UM ENTER.</p>
-<p>Destroir todos os agentes.</p>
+<p>Destruir todos os agentes.</p>
 <p>Apagar o mundo.</p>
 <p>Bye. </p>
 
-<p>Definition at line <a class="el" href="example_8c_source.html#l00082">82</a> of file <a class="el" href="example_8c_source.html">example.c</a>.</p>
+<p>Definition at line <a class="el" href="example_8c_source.html#l00085">85</a> of file <a class="el" href="example_8c_source.html">example.c</a>.</p>
 
 </div>
 </div>
@@ -428,7 +449,7 @@ Nuno Fachada </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="example_8c.html">example.c</a></li>
-    <li class="footer">Generated on Sun Feb 18 2018 22:39:25 for PIC2e1718 by
+    <li class="footer">Generated on Sun Feb 25 2018 22:55:38 for PIC2e1718 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

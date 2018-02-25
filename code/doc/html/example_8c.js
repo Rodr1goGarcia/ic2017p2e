@@ -9,5 +9,6 @@ var example_8c =
     [ "WORLD_Y", "example_8c.html#a64e8c993f3050d1eb6f4371ce2506996", null ],
     [ "example_get_ag_info", "example_8c.html#a8fc8348057055f92b997e34c63645911", null ],
     [ "main", "example_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4", null ],
-    [ "contar", "example_8c.html#ac75e11be6d8cebf929e38a4755e3b9a9", null ]
+    [ "contar", "example_8c.html#ac75e11be6d8cebf929e38a4755e3b9a9", null ],
+    [ "played", "example_8c.html#aad04f73cc7651ef09781187aa4602118", null ]
 ];
